@@ -274,7 +274,7 @@ import logging
 def admin_logout():
     session.pop('admin_logged_in', None)
     logging.info('Admin logged out')
-    return redirect(url_for('hello_sarvesh'))
+    return redirect(url_for('hello_sarvesh')) 
 
 
 if __name__ == '__main__':
