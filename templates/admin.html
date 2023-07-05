@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <!-- font awesome cdn -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      integrity="sha512-+dL2qQw5Jzvz5y+XQJLQ2jwJQp4Jq3Jq5l
+        +5/8+XZJm5Bz+g5ZBkz5R8ZBZJL2K4
+        +5ZQ5ZQ5ZQ5ZQ5ZQ5ZQ5ZQ5ZQ=="
+      crossorigin="anonymous"
+    />
+    {% include 'nav.html' %}
+    <title>Dashboard</title>
+    <style>
+      /* Optionally, you can remove the custom-table style from previous code */
+      .table-container {
+        margin: 0 20px; /* Adjust the margin as per your requirement */
+      }
+      .mob {
+        display: none;
+      }
+      @media screen and (max-width: 768px) {
+    
+        .full-pg,nav {
+          display: none !important;
+        }
+        .table-container {
+          margin: 0 10px; /* Adjust the margin as per your requirement */
+        }
+        .mob {
+          display: flex !important;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          flex-direction: column;
+          font-size: 1.5rem;
+          text-align: center;
+        }
+        .mob i {
+          font-size: 5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="full-pg">
+      <h1 class="text-center" style="margin-top: 40px; margin-bottom: 20px">
+        Job Applications
+      </h1>
+
+      <div class="container">
+        <form id="filterForm" method="POST" class="mb-3">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              id="filter_value"
+              name="filter_value"
+              required
+              placeholder="Search by name or email"
+            />
+          </div>
+        </form>
+      </div>
+
+      <div class="table-container">
+        <table class="table table-striped text-center">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Resume File</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for job_application in job_applications %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>
+                {% if loop.index > 1 and job_application.email ==
+                job_applications[loop.index-2].email %} {{ job_application.name
+                }} {% else %}
+                <a
+                  href="/applicant-jobs/{{ job_application.email }}"
+                  style="color: black; text-decoration: none"
+                  >{{ job_application.name }}</a
+                >
+                {% endif %}
+              </td>
+              <td>
+                <a
+                  href="mailto:{{ job_application.email }}"
+                  style="color: black; text-decoration: none"
+                  >{{ job_application.email }}</a
+                >
+              </td>
+              <td>
+                {% if job_application.resume_file %}
+                <a
+                  href="{{ url_for('resume_file', filename=job_application.resume_file) }}"
+                  target="_blank"
+                  style="color: black; text-decoration: none"
+                  >{{ job_application.resume_file.split('/')[-1] }}</a
+                >
+                {% else %}
+                <span>No resume file available</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="mob">
+      <h3>Please View it on Pc or Laptop</h3>
+      <br />
+      <br />
+      <i class="fas fa-desktop"></i>
+    </section>
+
+    <script>
+      document
+        .getElementById("filter_value")
+        .addEventListener("input", function () {
+          var filterValue = this.value.toLowerCase();
+          var rows = document.querySelectorAll("table tbody tr");
+
+          rows.forEach(function (row) {
+            var name = row
+              .querySelector("td:nth-child(2)")
+              .innerText.toLowerCase();
+            var email = row
+              .querySelector("td:nth-child(3)")
+              .innerText.toLowerCase();
+
+            if (name.includes(filterValue) || email.includes(filterValue)) {
+              row.style.display = "";
+            } else {
+              row.style.display = "none";
+            }
+          });
+        });
+    </script>
+
+    <footer>{% include 'footer.html' %}</footer>
+  </body>
+</html>

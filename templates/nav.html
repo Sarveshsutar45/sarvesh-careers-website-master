@@ -1,0 +1,31 @@
+<nav class="shadow p-3 mb-5 bg-body-tertiary rounded fixed-top bg-white">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <div>
+            <a class="navbar-brand" href="/">
+                <img src="/static/lo.jpg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                Sarvesh
+            </a>
+        </div>
+        <div>
+            {% if request.path == '/' %}
+                {% if session.admin_logged_in %}
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary">Admin Panel</a>
+                {% else %}
+                    <a href="{{ url_for('admin_login') }}" class="btn btn-primary">Admin Panel</a>
+                {% endif %}
+            {% elif session.admin_logged_in and request.path == '/admin/dashboard' %}
+                <a href="{{ url_for('admin_logout') }}" class="btn btn-primary">Log Out</a>
+                <a href="{{ url_for('all_jobs') }}" class="btn btn-primary">All Jobs</a>
+            {% elif session.admin_logged_in and request.path == '/admin/all_jobs' %}
+                <a href="{{ url_for('admin_logout') }}" class="btn btn-primary">Log Out</a>
+                <a href="{{ url_for('add_job') }}" class="btn btn-primary">Add Job</a> <!-- Add Job button -->
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary">Job Application</a> <!-- Dashboard button -->
+            {% elif session.admin_logged_in and request.path == '/admin/add_job' %}
+                <a href="{{ url_for('admin_logout') }}" class="btn btn-primary">Log Out</a> <!-- Logout button -->
+                <a href="{{ url_for('all_jobs') }}" class="btn btn-primary">All Jobs</a>
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary">Job Application</a> <!-- Dashboard button -->
+            {% endif %}
+        </div>
+    </div>
+</nav>
+<div style="height: 56px;"></div>

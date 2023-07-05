@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% include 'bootstrap.html' %}
+    <title>Apply for {{ job.title }}</title>
+</head>
+<body style="padding-left:30px;">
+    {% include 'nav.html' %}
+    <h1 class="text-center" style="margin-top: 20px;margin-bottom: 20px;">Apply for {{ job.title }}</h1>
+    <style>
+        #banner{
+            height: 300px;
+            width: 100%;
+            object-fit: cover;
+            margin-bottom: 16px;
+        }
+    </style>
+    <img class="img-fluid" id="banner" src="static\apply.jpg" alt="img" style=" object-fit:contain; margin-top: 16px">
+    <table class="table table-striped" >
+        <tbody>
+            <tr>
+                <th>Title:</th>
+                <td>{{ job.title }}</td>
+            </tr>
+            <tr>
+                <th>Location:</th>
+                <td>{{ job.location }}</td>
+            </tr>
+            {% if job.salary %}
+            <tr>
+                <th>Salary:</th>
+                <td>{{ job.currency }}{{ job.salary }}</td>
+            </tr>
+            <tr>
+                <th>Responsibilities:</th>
+                <td>{{ job.responsibilities }}</td>
+            </tr>
+            <tr>
+                <th>Requirements:</th>
+                <td>{{ job.requirements }}</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    <h1 class="text-center" style="margin-top: 20px;margin-bottom: 20px;">Applicant's Form</h1>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <form id="myForm" action="{{ url_for('apply')}}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate style="margin-top:30px ;">
+                <div class="mb-3">
+                    <label for="name" class="form-label"><b>Name:</b></label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                    <div class="invalid-feedback">Please enter your name.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label"><b>Email:</b></label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                    <div class="invalid-feedback">Please enter a valid email address.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="resume" class="form-label"><b>Resume:</b></label>
+                    <input type="file" class="form-control" id="resume" name="resume" accept=".pdf, .jpg, .png" required>
+                    <div class="invalid-feedback">Please upload your resume.</div>
+                </div>
+                <input type="hidden" name="job_id" value="{{ job.id }}">
+                <button type="submit" class="btn btn-primary">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var form = e.target;
+            if (form.checkValidity() === false) {
+                e.stopPropagation();
+                form.classList.add('was-validated');
+                return;
+            }
+
+          // Check if the applicant has already applied for this job
+var email = document.getElementById('email').value;
+var previousApplications = JSON.parse(localStorage.getItem('jobApplications')) || [];
+var isAlreadyApplied = previousApplications.some(function (application) {
+    return application.job_id === '{{ job.id }}' && application.email === email;
+});
+
+if (isAlreadyApplied) {
+    alert('You have already applied for this job.');
+    form.reset();
+    return;
+}
+
+
+            var formData = new FormData(form);
+            var fileInput = document.getElementById('resume');
+            var files = fileInput.files;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var fileName = generateUniqueFileName(file.name);
+                formData.append('resume', file, fileName);
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open(form.method, form.action);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    alert('Application submitted successfully!');
+                    form.reset();
+
+                    // Store the application details in local storage
+                    var newApplication = {
+                        job_id: '{{ job.id }}',
+                        name: name,
+                        email: email
+                    };
+                    previousApplications.push(newApplication);
+                    localStorage.setItem('jobApplications', JSON.stringify(previousApplications));
+                } else {
+                    alert('Failed to submit the application!');
+                }
+            };
+            xhr.onerror = function () {
+                alert('Failed to submit the application!');
+            };
+            xhr.send(formData);
+        });
+
+        function generateUniqueFileName(fileName) {
+            var uniqueId = Date.now() + '_' + Math.floor(Math.random() * 1000);
+            return uniqueId + '_' + fileName;
+        }
+    </script>
+    {% include 'footer.html' %}
+</body>
+</html>

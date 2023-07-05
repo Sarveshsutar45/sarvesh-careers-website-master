@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Jobs</title>
+    {% include 'nav.html' %}
+    <style>
+       
+    </style>
+    <style>
+        .table-container {
+            overflow-x: auto;
+            padding: 15px;
+        }
+
+        .table-container table {
+            min-width: 100%;
+        }
+        /* Optionally, you can remove the custom-table style from previous code */
+        .table-container {
+          margin: 0 20px; /* Adjust the margin as per your requirement */
+        }
+        .mob {
+          display: none;
+        }
+        @media screen and (max-width: 768px) {
+      
+          .full-pg,nav {
+            display: none !important;
+          }
+         
+          .mob {
+            display: flex !important;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            font-size: 1.5rem;
+            text-align: center;
+          }
+          .mob i {
+            font-size: 5rem;
+          }
+        }
+      </style>
+</head><section class="full-pg"><body>
+    <div class="container">
+        <h1 class="text-center" style="margin-top: 40px; margin-bottom: 20px;">All Jobs</h1>
+    </div>
+
+    <div class="table-container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Location</th>
+                    <th>Salary</th>
+                    <th>Responsibilities</th>
+                    <th>Requirements</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ job.title }}</td>
+                    <td>{{ job.location }}</td>
+                    <td> {{ job.currency }}{{ job.salary }}</td>
+                    <td>{{job.responsibilities}}</td>
+                    <td>{{job.requirements}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div style="padding-top: 80px;"> {% include 'footer.html' %}</div>  
+</body></section>
+<section class="mob">
+    <h3>Please View it on Pc or Laptop</h3>
+    <br />
+    <br />
+    <i class="fas fa-desktop"></i>
+  </section>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>{{ company_name }} CAREER'S</title>
+    <style>
+        p.lead {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .row {
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        .page-title {
+            margin-top: 20px;
+            margin-bottom: 40px; /* Increase the bottom margin as per your preference */
+        }
+    </style>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <style>
+        #banner {
+            height: 300px;
+            width: 100%;
+            object-fit: cover;
+            margin-bottom: 16px;
+        }
+    </style>
+    <img class="img-fluid" id="banner" src="static/banner.jpg" alt="img" height="320px">
+
+    <div class="container">
+        <h1 class="text-center page-title">{{ company_name }} CAREER'S</h1>
+
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-6">
+                <p class="lead" style="font-size: 17px;">
+                    <b>Sarvesh's Career Website is here to support and empower you. Our mission is to help you make informed decisions about your career. Discover a wide range of industries, job roles, and career development strategies, and unlock your full potential. We believe in the power of continuous learning and are committed to helping you thrive in your chosen career path. Join us on this exciting adventure and take the next steps towards a fulfilling and successful career. This platform is designed to provide you with valuable resources and guidance on your career journey. Whether you are a student exploring different career paths, a professional looking to advance your career, or an individual seeking career advice.</b>
+                </p>
+            </div>
+            <div class="d-md-block col-md-6">
+                <img class="img-fluid" src="static/people.jpg" alt="employee" style="border-radius: 4px;">
+            </div>
+        </div>
+
+        <div class="row">
+            <h2 class="text-center mt-5 mb-5">OPEN POSITIONS</h2>
+
+            <div class="col-md-12">
+                <div class="input-group mb-3">
+                    <input type="text" id="job-search" class="form-control" placeholder="Search by job name">
+                </div>
+            </div>
+
+            {% for job in jobs %}
+            <div class="col-md-6 job-card">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ job.title }}</h5>
+                        <p class="card-text"><b>Location: </b>{{ job.location }}</p>
+                        <p class="card-text"><b>Salary: </b>{{ job.currency }}{{ job.salary }} </p>
+                        <a href="{{ url_for('apply', job_id=job.id) }}" class="btn btn-primary">Apply</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center" style="margin-bottom: 32px;"></div>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // JavaScript code for filtering job names based on search inputs
+        const searchInput = document.querySelector('#job-search');
+        const jobCards = document.querySelectorAll('.job-card');
+
+        searchInput.addEventListener('input', function () {
+            const searchQuery = searchInput.value.toLowerCase();
+
+            jobCards.forEach(function (card) {
+                const jobName = card.querySelector('.card-title').textContent.toLowerCase();
+
+                if (jobName.includes(searchQuery)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

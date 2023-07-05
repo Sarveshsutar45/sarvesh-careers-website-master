@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Job</title>
+    {% include 'nav.html' %}
+</head>
+<style>
+    /* Optionally, you can remove the custom-table style from previous code */
+    .table-container {
+      margin: 0 20px; /* Adjust the margin as per your requirement */
+    }
+    .mob {
+      display: none;
+    }
+    @media screen and (max-width: 768px) {
+  
+      .full-pg,nav {
+        display: none !important;
+      }
+     
+      .mob {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+        font-size: 1.5rem;
+        text-align: center;
+      }
+      .mob i {
+        font-size: 5rem;
+      }
+    }
+  </style>
+<section class="full-pg"><body>
+    <div class="container">
+    <h1 class="text-center" style="margin-top: 40px;margin-bottom: 20px;">Add Job</h1>
+
+    <form method="POST" action="{{ url_for('add_job') }}" onsubmit="return validateForm()">
+        <div class="mb-3">
+            <label for="title" class="form-label">Job Title</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" class="form-control" id="location" name="location" required>
+        </div>
+        <div class="mb-3">
+            <label for="salary" class="form-label">Salary</label>
+            <input type="number" class="form-control" id="salary" name="salary">
+        </div>
+        <div class="mb-3">
+            <label for="currency" class="form-label">Currency</label>
+            <select class="form-select" id="currency" name="currency">
+                <option value="" selected disabled>Select a currency symbol</option>
+                <option value="$">USD ($)</option>
+                <option value="€">EUR (€)</option>
+                <option value="£">GBP (£)</option>
+                <option value="¥">JPY (¥)</option>
+                <option value="₹">INR (₹)</option>
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="responsibilities" class="form-label">Responsibilities</label>
+            <textarea class="form-control" id="responsibilities" name="responsibilities" rows="5"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="requirements" class="form-label">Requirements</label>
+            <textarea class="form-control" id="requirements" name="requirements" rows="5"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Job</button>
+    </form>
+</div>
+{% include 'footer.html' %}
+    <div class="container">
+        <h1 class="text-center" style="margin-top: 40px;margin-bottom: 20px;">Add Job</h1>
+
+        <form method="POST" action="{{ url_for('add_job') }}" onsubmit="return validateForm()">
+            <div class="mb-3">
+                <label for="title" class="form-label">Job Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" class="form-control" id="location" name="location" required>
+            </div>
+            <div class="mb-3">
+                <label for="salary" class="form-label">Salary</label>
+                <input type="number" class="form-control" id="salary" name="salary">
+            </div>
+            <div class="mb-3">
+                <label for="currency" class="form-label">Currency</label>
+                <select class="form-select" id="currency" name="currency">
+                    <option value="" selected disabled>Select a currency symbol</option>
+                    <option value="$">USD ($)</option>
+                    <option value="€">EUR (€)</option>
+                    <option value="£">GBP (£)</option>
+                    <option value="¥">JPY (¥)</option>
+                    <option value="₹">INR (₹)</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="responsibilities" class="form-label">Responsibilities</label>
+                <textarea class="form-control" id="responsibilities" name="responsibilities" rows="5"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="requirements" class="form-label">Requirements</label>
+                <textarea class="form-control" id="requirements" name="requirements" rows="5"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Job</button>
+        </form>
+    </div>
+    {% include 'footer.html' %}</section>
+    <section class="mob">
+        <h3>Please View it on Pc or Laptop</h3>
+        <br />
+        <br />
+        <i class="fas fa-desktop"></i>
+      </section>
+    <script>
+        function validateForm() {
+            var title = document.getElementById('title').value;
+            var location = document.getElementById('location').value;
+            var currency = document.getElementById('currency').value;
+            var responsibilities = document.getElementById('responsibilities').value;
+            var requirements = document.getElementById('requirements').value;
+    
+            if (title.trim() === '' || location.trim() === '' || currency.trim() === '' || responsibilities.trim() === '' || requirements.trim() === '') {
+                alert('Please insert all credentials.');
+                return false; // Prevent form submission
+            }
+    
+            // Job added successfully alert
+            alert('Job added successfully!');
+            return true; // Submit the form
+        }
+    </script>
+    
+</body>
+</html>
